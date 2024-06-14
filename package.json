@@ -1,0 +1,33 @@
+{
+  "name": "backend-wala",
+  "version": "1.0.0",
+  "description": "A CLI tool for backend developers",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "backend": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nkrider7/backend-wala.git"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^5.0.5",
+    "chalk": "^5.3.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "CLI",
+    "backend",
+    "developer",
+    "tool"
+  ],
+  "author": "Narendra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nkrider7/backend-wala/issues"
+  },
+  "homepage": "https://github.com/nkrider7/backend-wala#readme"
+}
