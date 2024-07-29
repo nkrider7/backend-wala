@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { blue, green, red, blueBg, greenBg, redBg } from "./src/run.js"
 import fs from "fs";
 import path from "path";
 import { input } from "@inquirer/prompts";
@@ -11,12 +12,19 @@ import { expressTemplate } from "./src/Templete/express.js";
 import { hapiTemplate } from "./src/Templete/hapi.js";
 import { fileTemp } from "./src/Folder/fileTemp.js";
 
-console.log(chalk.blue("Are you looking for a Backend Template?"));
+red(`
+▄▀─▄▀
+─▀──▀
+█▀▀▀▀▀█▄
+█░░░░░█─█ Backend-Wala🍬
+▀▄▄▄▄▄▀▀
+`)
+green("Are you looking for a Backend Template?");
 
 const answer2 = await confirm({ message: "Building a Backend... Continue?" });
 
 if (answer2) {
-  console.log(chalk.green("Great! Let's get started."));
+  blue("Great! Let's get started.");
 
   // Prompt for user input
   const projectName = await input({ message: "Enter your project name" });
@@ -38,8 +46,12 @@ if (answer2) {
   }
 
   // Prompt for MongoDB
+
   const useMongoDB = await confirm({
     message: "Would you like to use MongoDB?🥭",
+  });
+  const useNodemon = await confirm({
+    message: "Would you like to use Nodemon?🔥",
   });
 
   // Create project directory
@@ -54,16 +66,19 @@ if (answer2) {
     name: projectName,
     version: "1.0.0",
     main: "server.js",
+    type: "module",
     scripts: {
       start: "node server.js",
     },
     dependencies: {},
+    devDependencies: {},
   };
 
   switch (templateType) {
     case "express":
       serverFileContent = expressTemplate();
       packageJsonContent.dependencies.express = "^4.17.1";
+      packageJsonContent.dependencies["body-parser"] = "^1.19.0";
       break;
     case "hapi":
       serverFileContent = hapiTemplate();
@@ -75,7 +90,6 @@ if (answer2) {
   }
 
   if (useMongoDB) {
-    packageJsonContent.dependencies["mongodb"] = "^4.1.0";
     packageJsonContent.dependencies["mongoose"] = "^5.12.3";
     serverFileContent = `
 ${serverFileContent.trim()}
@@ -90,9 +104,12 @@ db.once('open', () => {
 });
 `;
   }
-
+  if (useNodemon) {
+    packageJsonContent.devDependencies.nodemon = "^2.0.7";
+    packageJsonContent.scripts.dev = "nodemon server.js";
+  }
   // Create initial folder and file structure
-  const folders = ["controllers", "models", "routes"];
+  const folders = ["controllers", "models", "routes", "utils"];
   const filesToCreate = fileTemp;
 
   folders.forEach((folder) => {
@@ -128,15 +145,21 @@ db.once('open', () => {
   console.log(
     chalk.green(`Project ${projectName} created successfully at ${projectDir}`)
   );
-  console.log(chalk.green(`Installing dependencies...`));
+  console.log(chalk.blue(`🔦Installing dependencies...`));
   execSync("npm install", { cwd: projectDir, stdio: "inherit" });
 
   console.log(chalk.green(`Dependencies installed successfully.`));
-  console.log(
-    chalk.green(
-      `To start your server, run 'npm start' in the project directory.`
-    )
-  );
+  blueBg(`To start your server, run 'npm start' in the project directory.`)
+  const isStart = await confirm({
+    message: "Would you like to start your server?🏃‍➡️",
+  });
+  if(isStart && useNodemon){
+    execSync("npm run dev", { cwd: projectDir, stdio: "inherit" });
+  }
+  else if(isStart){
+    execSync("npm start", { cwd: projectDir, stdio: "inherit" });
+  }
+  
 } else {
-  console.log(chalk.yellow("Operation cancelled."));
+  redBg("Operation cancelled.")
 }
