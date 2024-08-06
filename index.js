@@ -10,7 +10,11 @@ import chalk from "chalk";
 import { execSync } from "child_process";
 import { expressTemplate } from "./src/Templete/express.js";
 import { hapiTemplate } from "./src/Templete/hapi.js";
+
 import { nodejsTemplate } from "./src/Templete/node.js";
+
+import { fastifyTemplate } from "./src/Templete/fastify.js";
+
 import { fileTemp } from "./src/Folder/fileTemp.js";
 
 red(`
@@ -37,6 +41,9 @@ if (answer2) {
       { name: "🚅 Express", value: "express" },
       { name: "🤖 Hapi", value: "hapi" },
       {name : "Node" , value : "node"} ,
+
+      {name : "🚃 Fastify" , value : "fastify"} ,
+
       new Separator(),
       { name: "Cancel", value: "cancel" },
     ],
@@ -86,10 +93,15 @@ if (answer2) {
       serverFileContent = hapiTemplate();
       packageJsonContent.dependencies["@hapi/hapi"] = "^20.1.2";
       break;
+
     case "node" : 
       serverFileContent = nodejsTemplate();
       // don't need of express and body-parser
-
+        break ;
+    case "fastify":
+      serverFileContent = fastifyTemplate();
+      packageJsonContent.dependencies["fastify"] = "^4.28.1";
+      break ;
     default:
       console.log(chalk.red("Invalid template type selected."));
       process.exit();
