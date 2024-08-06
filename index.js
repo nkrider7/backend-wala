@@ -13,6 +13,8 @@ import { hapiTemplate } from "./src/Templete/hapi.js";
 import { fastifyTemplate } from "./src/Templete/fastify.js";
 import { fileTemp } from "./src/Folder/fileTemp.js";
 
+
+import { honojsTemplate } from "./src/Templete/hono.js";
 red(`
 ▄▀─▄▀
 ─▀──▀
@@ -37,6 +39,8 @@ if (answer2) {
       { name: "🚅 Express", value: "express" },
       { name: "🤖 Hapi", value: "hapi" },
       {name : "🚃 Fastify" , value : "fastify"} ,
+
+      {name : "Hono" , value : "hono" } ,
       new Separator(),
       { name: "Cancel", value: "cancel" },
     ],
@@ -90,6 +94,11 @@ if (answer2) {
       serverFileContent = fastifyTemplate();
       packageJsonContent.dependencies["fastify"] = "^4.28.1";
       break ;
+
+    case  "hono" : 
+      serverFileContent = honojsTemplate();
+      packageJsonContent.dependencies["hono"] = "^4.5.0";
+      break;
     default:
       console.log(chalk.red("Invalid template type selected."));
       process.exit();
