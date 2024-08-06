@@ -36,6 +36,7 @@ if (answer2) {
     choices: [
       { name: "🚅 Express", value: "express" },
       { name: "🤖 Hapi", value: "hapi" },
+      {name : "Node" , value : "node"} ,
       new Separator(),
       { name: "Cancel", value: "cancel" },
     ],
